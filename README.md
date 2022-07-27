@@ -8,6 +8,7 @@ Current features:
 
 * `/ping` - responds with pong to show bots online status
 * `/timeout <user> <time> <reason>` times out a user
+* `/ban <user> <reason> <delete message days>` bans a user
 
 ## Setup
 

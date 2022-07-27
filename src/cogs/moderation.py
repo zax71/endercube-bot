@@ -16,7 +16,7 @@ class Moderation(discord.Cog):
     def __init__(self, bot):
         self.bot = bot
         self._last_member = None
-        termcolor.cprint(f"loaded moderation cog", "blue")
+        termcolor.cprint("Loaded moderation cog", "blue")
     
     @discord.slash_command(guild_ids=[config["guild_ID"]], description="Times out a member")
     @discord.default_permissions(manage_messages=True)
@@ -44,6 +44,36 @@ class Moderation(discord.Cog):
 
         await user.timeout(until=timeoutTime, reason=reason)
         userMessage = f"Timed out {user.mention} for {time}, expiring <t:{int(timeoutTimeUnix)}:R>"
+        if reason == None:
+            await ctx.respond(userMessage, ephemeral=True)
+        else:
+            await ctx.respond(f"{userMessage} with a reason of {reason}", ephemeral=True)
+
+    @discord.slash_command(guild_ids=[config["guild_ID"]], description="Bans a member")
+    @discord.default_permissions(manage_messages=True)
+    @discord.option(
+        "user",
+        description="The user to ban",
+        required=True
+    )
+    @discord.option(
+        "reason",
+        description="Why the user has been banned",
+        required=False
+    )
+    @discord.option(
+        "delete_messages",
+        description="How far back should we delete the users messages? Max 7 days",
+        required=False,
+        input_type=int,
+        default=0,
+        min_value=0,
+        max_value=7
+    )
+    async def ban(ctx, user: discord.Member, reason: str, delete_messages: int):
+
+        await ctx.guild.ban(user, reason=reason, delete_message_days=delete_messages)
+        userMessage = f"Banned {user.mention} and deleted messages for {delete_messages} days"
         if reason == None:
             await ctx.respond(userMessage, ephemeral=True)
         else:
