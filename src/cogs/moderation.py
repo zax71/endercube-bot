@@ -18,7 +18,7 @@ class Moderation(discord.Cog):
         self._last_member = None
         print("Loaded moderation cogs")
     
-    @discord.slash_command(guild_ids=[909873568358236190], description="Times out a member")
+    @discord.slash_command(guild_ids=[config["guild_ID"]], description="Times out a member")
     @discord.default_permissions(manage_messages=True)
     @discord.option(
         "user",
