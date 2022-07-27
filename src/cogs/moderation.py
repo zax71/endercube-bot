@@ -1,4 +1,4 @@
-import discord, humanfriendly, datetime, yaml
+import discord, humanfriendly, datetime, yaml, termcolor
 from time import mktime
 
 def loadConfig():
@@ -16,7 +16,7 @@ class Moderation(discord.Cog):
     def __init__(self, bot):
         self.bot = bot
         self._last_member = None
-        print("Loaded moderation cogs")
+        termcolor.cprint(f"loaded moderation cog", "blue")
     
     @discord.slash_command(guild_ids=[config["guild_ID"]], description="Times out a member")
     @discord.default_permissions(manage_messages=True)
