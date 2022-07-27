@@ -70,10 +70,31 @@ class Moderation(discord.Cog):
         min_value=0,
         max_value=7
     )
-    async def ban(ctx, user: discord.Member, reason: str, delete_messages: int):
+    async def ban(self, ctx, user: discord.Member, reason: str, delete_messages: int):
 
         await ctx.guild.ban(user, reason=reason, delete_message_days=delete_messages)
         userMessage = f"Banned {user.mention} and deleted messages for {delete_messages} days"
+        if reason == None:
+            await ctx.respond(userMessage, ephemeral=True)
+        else:
+            await ctx.respond(f"{userMessage} with a reason of {reason}", ephemeral=True)
+    
+    @discord.slash_command(guild_ids=[config["guild_ID"]], description="Kicks a member")
+    @discord.default_permissions(manage_messages=True)
+    @discord.option(
+        "user",
+        description="The user to kick",
+        required=True
+    )
+    @discord.option(
+        "reason",
+        description="Why the user has been kicked",
+        required=False
+    )
+    async def kick(self, ctx, user: discord.User, reason: str):
+        await user.kick(reason=reason)
+        userMessage = f"Kicked {user.mention}"
+        
         if reason == None:
             await ctx.respond(userMessage, ephemeral=True)
         else:
