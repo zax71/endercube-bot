@@ -40,10 +40,10 @@ class Moderation(discord.Cog):
         timeSeconds = humanfriendly.parse_timespan(time)
         
         timeoutTime=discord.utils.utcnow() + datetime.timedelta(seconds=timeSeconds)
-        timeoutTimeUnix = mktime(timeoutTime.timetuple())
+        timeoutTimeUnix = timeoutTime.timestamp()
 
         await user.timeout(until=timeoutTime, reason=reason)
-        userMessage = f"Timed out {user.mention} for {time}, expiring <t:{int(timeoutTimeUnix)+3600}:R>"
+        userMessage = f"Timed out {user.mention} for {time}, expiring <t:{int(timeoutTimeUnix)}:R>"
         if reason == None:
             await ctx.respond(userMessage, ephemeral=True)
         else:
